@@ -1,0 +1,86 @@
+{{>header}}
+    <div class="container pt-3"><br>
+        <form method="POST" action="/ticket/create">
+            <fieldset>
+                <legend>{{page_title}}</legend><br><br>
+                {{!-- <h2></h2><br> --}}
+                {{#if messages.error }}
+                <p class="alert alert-danger mt-4">{{messages.error}}</p>
+                {{/if }}
+                
+                {{#if messages.success }}
+                    <p class="alert alert-success mt-4">{{messages.success}}</p>
+                {{/if }}
+         
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="form3Example3">Title</label>
+                            <input type="text" name="title" class="form-control"
+                    placeholder="Enter Title" />
+                        </div>
+                    </div>
+                    {{!-- {{#if messages.error }}
+                    <div class="col-lg-6" style="margin-top: 30px;">
+                        {{messages.error}}
+                    </div>
+                    {{/if }} --}}
+                </div><br>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="form3Example3">Description</label>
+                            <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+                    {{!-- {{#if messages.error }}
+                    <div class="col-lg-6" style="margin-top: 30px;">
+                        {{messages.error}}
+                    </div>
+                    {{/if }} --}}
+                </div><br>
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="form3Example3">Assigned To</label>
+                            <select name="assignedto" id="assignedto" class="form-control">
+                                {{#if listUsers}}
+                                    {{#each listUsers}}
+                                        <option value="{{this._id}}">{{this.name}}</option>
+                                    {{/each}}
+                                {{/if }}
+                            </select>
+                        </div>
+                    </div>
+                    {{!-- {{#if messages.error }}
+                    <div class="col-lg-6" style="margin-top: 30px;">
+                        {{messages.error}}
+                    </div>
+                    {{/if }} --}}
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="form3Example3">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{!-- {{#if messages.error }}
+                    <div class="col-lg-6" style="margin-top: 30px;">
+                        {{messages.error}}
+                    </div>
+                    {{/if }} --}}
+                </div>
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <input type="submit" class="btn btn-primary" value="Create">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{{>footer}}

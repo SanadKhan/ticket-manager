@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="icon" href="/img/icon.png">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="/img/loginimage.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form method="POST" action="/user/create">
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <h3>Sign up to Ticket Manager</h3>
+          </div>
+
+          <div class="divider d-flex align-items-center my-4">
+            {{!-- <p class="text-center fw-bold mx-3 mb-0">Sign In</p> --}}
+          </div>
+
+          {{#if messages.error }}
+            <p class="alert alert-danger mt-4">{{messages.error}}</p>
+          {{/if }}
+          
+          {{#if messages.success }}
+              <p class="alert alert-success mt-4">{{messages.success}}</p>
+          {{/if }}
+
+          <!-- Name input -->
+          <div class="form-outline mb-4">
+            <input type="text" name="name" class="form-control form-control-lg"
+              placeholder="Enter name" />
+            <label class="form-label" for="form3Example3">Name</label>
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="email" name="email" class="form-control form-control-lg"
+              placeholder="Enter a valid email address" />
+            <label class="form-label" for="form3Example3">Email address</label>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <input type="password" name="password" class="form-control form-control-lg"
+              placeholder="Enter password" />
+            <label class="form-label" for="form3Example4">Password</label>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <input type="submit" class="btn btn-primary btn-lg" 
+            style="padding-left: 2.5rem; padding-right: 2.5rem;" value="Sign up">
+            {{!-- <button type="submit" class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;">Sign up</button> --}}
+            <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="/"
+                class="link-success">Sign in</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

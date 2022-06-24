@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Manager</title>
+    <link rel="icon" href="/img/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/list">Ticket Manager</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+            <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        {{#if active_list}}
+                            <a class="nav-link active" href="/list">All Tickets</a>
+                        {{else}}
+                            <a class="nav-link" href="/list">All Tickets</a>
+                        {{/if}}
+                    </li>
+                    <li class="nav-item">
+                        {{#if active_myassignedtickets}}
+                            <a class="nav-link active" href="/myassignedtickets">Assigned Tickets</a>
+                        {{else}}
+                            <a class="nav-link" href="/myassignedtickets">Assigned Tickets</a>
+                        {{/if}}
+                    </li>
+                    <li class="nav-item">
+                        {{#if active_mycreatedtickets}}
+                            <a class="nav-link active" href="/mycreatedtickets">My Tickets</a>
+                        {{else}}
+                            <a class="nav-link" href="/mycreatedtickets">My Tickets</a>
+                        {{/if}}
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </span>
+            </div>
+        </div>
+    </nav>

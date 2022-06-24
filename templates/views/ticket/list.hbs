@@ -1,0 +1,76 @@
+{{>header}}
+    <div class="container"><br>
+        <div>
+            <div class="float-left">
+                <h4>Welcome, {{userName}}</h4><br>
+            </div>
+        </div>
+        <div>
+            <div class="float-left">
+                <h2>{{page_title}}</h2><br>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="th-lg">Title</th>
+                        <th class="th-lg">Description</th>
+                        <th class="th-lg">Assinged By</th>
+                        <th class="th-lg">Assinged To</th>
+                        <th class="th-lg">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#ticket}}
+                        <tr>
+                            <th scope="row">{{serialNo}}</th>
+                            <td>{{title}}</td>
+                            <td>{{descp_slice description}}</td>
+                            <td>{{owner.name}}</td>
+                            <td>{{assignedto.name}}</td>
+                            <td>{{status}}</td>
+                        </tr>
+                    {{else}}
+                        <tr>
+                            <td style="text-align:center" colspan="5">No Tickets Available!</td>
+                        </tr>
+                    {{/ticket}}
+                </tbody>
+            </table>
+            {{#if ticket}}
+            <nav class="Page navigation example">
+                <ul class="pagination justify-content-end">
+                     {{#paginate pagination type="first"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">First</a>
+                    </li>
+                    {{/paginate}} 
+                    {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Prev</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="middle" }}
+                    <li {{#if active}}class="page-item active"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">{{n}}</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Next</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="last"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Last</a>
+                    </li>
+                    {{/paginate}}
+                </ul>
+            </nav>
+            {{else}}
+            {{/if}}
+        </div>
+    </div>
+{{>footer}}

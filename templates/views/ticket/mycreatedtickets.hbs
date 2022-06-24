@@ -1,0 +1,110 @@
+{{>header}}
+    <div class="container"><br>
+        <h2>{{page_title}}</h2><br>
+        <a href="/ticket/add" class="btn btn-primary float-right">
+            Add Ticket
+        </a><br><br>
+        {{#if messages.error }}
+            <p class="alert alert-danger mt-4">{{messages.error}}</p>
+        {{/if }}
+        
+        {{#if messages.success }}
+            <p class="alert alert-success mt-4">{{messages.success}}</p>
+        {{/if }}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="th-lg">Title</th>
+                        <th class="th-lg">Description</th>
+                        <th class="th-lg">Assigned To</th>
+                        <th class="th-lg">Status</th>
+                        <th class="th-lg">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#ticket}}
+                        <tr>
+                            <th scope="row">{{serialNo}}</th>
+                            <td>{{title}}</td>
+                            <td>{{descp_slice description}}</td>
+                            <td>{{assignedto.name}}</td>
+                            <td>{{status}}</td>
+                            <td>
+                                <a href="/ticket/edit/{{_id}}"><i class="fa fa-edit"></i></a>
+                                <a href="/ticket/delete/{{_id}}"
+                                onclick="return confirm('Are you sure to delete this record ?');"><i
+                                class="fa fa-trash" style="color: red;" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    {{else}}
+                        <tr>
+                            <td style="text-align:center" colspan="6">No Tickets Available!</td>
+                        </tr>
+                    {{/ticket}}
+                </tbody>
+            </table>
+            {{#if ticket}}
+            <nav class="Page navigation example">
+                <ul class="pagination justify-content-end">
+                     {{#paginate pagination type="first"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">First</a>
+                    </li>
+                    {{/paginate}} 
+                    {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Prev</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="middle" }}
+                    <li {{#if active}}class="page-item active"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">{{n}}</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Next</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="last"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Last</a>
+                    </li>
+                    {{/paginate}}
+                </ul>
+            </nav>
+            {{else}}
+            {{/if}}
+        </div>
+    </div>
+{{>footer}}
+
+
+
+                    {{!-- {{#paginate pagination type="first"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">First</a>
+                    </li>
+                    {{/paginate}} 
+                    {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Prev</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="middle" }}
+                    <li {{#if active}}class="page-item active"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">{{n}}</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Next</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="last"}}
+                    <li {{#if disabled}}class="page-item disabled"{{/if}}>
+                        <a class="page-link" href="?p={{n}}">Last</a>
+                    </li>
+                    {{/paginate}} --}}
