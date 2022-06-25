@@ -11,7 +11,7 @@ const hbsHelpers = require('../app/helper');
 
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
-const port = process.env.PORT
+const port = process.env.PORT || '3000'
 
 //Define path for views
 const publicDirectoryPath = path.join(__dirname,'../public')
