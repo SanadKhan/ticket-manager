@@ -27,7 +27,20 @@
                             <td>{{title}}</td>
                             <td>{{descp_slice description}}</td>
                             <td>{{owner.name}}</td>
-                            <td>{{status}}</td>
+                            {{#ifCond status '==' 'Completed'}}
+                                <td>{{status}}</td>
+                            {{else}}
+                            <form method="POST" action="/ticket/updatestatus/{{_id}}" >
+                                <td>
+                                    {{#select status}}
+                                    <select name="status" id="status" class="form-control" onchange="this.form.submit()"> 
+                                        <option value="Pending">Pending</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                    {{/select}}
+                                </td>
+                            </form>
+                            {{/ifCond}}
                         </tr>
                     {{else}}
                         <tr>

@@ -12,6 +12,7 @@ const ticketSchema = new mongoose.Schema({
     }, 
     status: {
         type: String,
+        default: "Pending"
     }, 
     owner: {
         type: mongoose.Schema.Types.ObjectId,

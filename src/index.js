@@ -25,7 +25,7 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 app.use(session({ 
-	secret: '123456cat',
+	secret: process.env.SESSION_KEY,
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
@@ -33,19 +33,15 @@ app.use(session({
 		maxAge: 259199772 	
 	}
 }))
-// app.use((req, res, next) => {
-//     // app.locals.username = req.session.username || ""
-//     app.locals.userid = req.session.userId || ""
-//     next()
-// })
 app.use(flash())
-
-
-
 app.use(userRouter)
 app.use(ticketRouter)
 
-
+app.get('*', (req, res) => {
+	res.render('404', {
+		title:'Ticket Manager',
+	})
+})
 
 app.listen(port ,() => {
 	console.log('Server is up to port ' +port)

@@ -138,6 +138,23 @@ router.post('/ticket/update/:id', auth, async (req, res) => {
     }
 })   
 
+router.post('/ticket/updatestatus/:id', auth, async (req, res) => {
+    try {
+        const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body)
+        if(!ticket) {
+            req.flash('success', 'Updated Successfully!')
+            return res.redirect('/myassignedtickets')
+        } else {
+            req.flash('erorr', 'Failed to Update!')
+            return res.redirect('/myassignedtickets')
+        }  
+    } catch (error) {
+        console.log('From Update Status Ticket ' + error)
+        req.flash('error', 'Something Went Wrong');
+        return res.redirect('/myassignedtickets')
+    }
+})   
+
 router.get('/ticket/delete/:id', auth, async (req, res) => {
 
     try {
