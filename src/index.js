@@ -9,9 +9,13 @@ const flash =  require('express-flash')
 const session = require('express-session')
 const hbsHelpers = require('../app/helper');
 
+var mongoose = require('mongoose');
+console.log(mongoose.STATES[mongoose.connection.readyState]);
+
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
 const port = process.env.PORT
+
 
 //Define path for views
 const publicDirectoryPath = path.join(__dirname,'../public')
