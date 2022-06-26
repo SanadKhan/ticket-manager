@@ -13,9 +13,6 @@ var mongoose = require('mongoose');
 console.log(mongoose.STATES[mongoose.connection.readyState]);
 console.log(process.env.MONGODB_URL)
 
-var mongoose = require('mongoose');
-console.log(mongoose.STATES[mongoose.connection.readyState]);
-
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
 const port = process.env.PORT
