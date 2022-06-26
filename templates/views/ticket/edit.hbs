@@ -3,15 +3,11 @@
         <form method="POST" action="/ticket/update/{{ticket._id}}">
             <fieldset>
                 <legend>{{page_title}}</legend><br><br>
-                {{!-- <h2></h2><br> --}}
                 {{#if messages.error }}
                     <div class="col-lg-6 alert alert-danger">
                         {{messages.error}}
                     </div>
                 {{/if }}
-                {{!-- {{#if messages.error }}
-                <p class="alert alert-danger mt-4">{{messages.error}}</p>
-                {{/if }} --}}
                      
                 <div class="row">
                     <div class="col-lg-6">
@@ -21,11 +17,6 @@
                     placeholder="Enter Title" />
                         </div>
                     </div>
-                    {{!-- {{#if messages.error }}
-                    <div class="col-lg-6" style="margin-top: 30px;">
-                        {{messages.error}}
-                    </div>
-                    {{/if }} --}}
                 </div><br>
 
                 <div class="row">
@@ -36,11 +27,6 @@
                             rows="10">{{ticket.description}}</textarea>
                         </div>
                     </div>
-                    {{!-- {{#if messages.error }}
-                    <div class="col-lg-6" style="margin-top: 30px;">
-                        {{messages.error}}
-                    </div>
-                    {{/if }} --}}
                 </div><br>
 
                 <div class="row">
@@ -56,11 +42,6 @@
                             {{/select}}
                         </div>
                     </div>
-                    {{!-- {{#if messages.error }}
-                    <div class="col-lg-6" style="margin-top: 30px;">
-                        {{messages.error}}
-                    </div>
-                    {{/if }} --}}
                 </div>
 
                 <div class="row">
@@ -75,11 +56,6 @@
                             {{/select}}
                         </div>
                     </div>
-                    {{!-- {{#if messages.error }}
-                    <div class="col-lg-6" style="margin-top: 30px;">
-                        {{messages.error}}
-                    </div>
-                    {{/if }} --}}
                 </div>
                 <div class="text-center text-lg-start mt-4 pt-2">
                     <input type="submit" class="btn btn-primary" value="Update">

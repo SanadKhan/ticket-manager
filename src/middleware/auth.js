@@ -1,6 +1,4 @@
 const auth = (req, res, next) => {
-   
-    console.log('from session ' + req.session.userId)
     if (req.session.userId) {
         next();
     } else {

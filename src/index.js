@@ -1,22 +1,18 @@
-const express= require('express')
+const express = require('express')
 const hbs = require('hbs')
 const path = require('path')
 const userRouter = require('./routers/user')
 const ticketRouter = require('./routers/ticket')
-require('./db/mongoose')
 const bodyparser = require('body-parser')
 const flash =  require('express-flash')
 const session = require('express-session')
-require('../app/helper');
-
-var mongoose = require('mongoose');
-console.log(mongoose.STATES[mongoose.connection.readyState]);
-console.log(process.env.MONGODB_URL)
+const MongoStore = require('connect-mongo');
+require('../app/helper')
+require('./db/mongoose')
 
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
 const port = process.env.PORT
-
 
 //Define path for views
 const publicDirectoryPath = path.join(__dirname,'../public')
@@ -30,13 +26,14 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 app.use(session({ 
-	secret: '123456tm',
+	secret: process.env.SESSION_KEY,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
-		secure: true, 
+		secure: false, 
 		maxAge: 259199772 	
-	}
+	},
+	store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL})
 }))
 app.use(flash())
 app.use(userRouter)

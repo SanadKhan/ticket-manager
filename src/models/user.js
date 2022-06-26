@@ -26,15 +26,6 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-
-
-// userSchema.methods.toJSON = function () {
-//     const user = this
-//     const userObject = user.toObject()
-//     delete userObject.password
-//     return userObject
-// }
-
 //Hash password
 userSchema.pre('save', async function (next) {
     const user = this
@@ -43,15 +34,6 @@ userSchema.pre('save', async function (next) {
     }
     next()
 })
-
-//delete user task idf user is deleted
-// userSchema.pre('remove', async function (next) {
-//     const user = this
-//     await Task.deleteMany({ owner: user._id })
-//     next()
-// })
-
-
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

@@ -4,6 +4,7 @@ const auth  = require('../middleware/auth')
 const Ticket = require('../models/ticket')
 const User = require('../models/user')
 const joi = require('joi')
+const getTickets = require('../services/ticket')
 
 
 const ticketValidation = joi.object({
@@ -15,16 +16,10 @@ router.get('/list',  auth, async (req, res) => {
 
     try {
         const page = parseInt(req.query.p) || 1
-        const perPage = 10
-        const ticketCount = await Ticket.find({  }).count()
-        const pagination = { page, pageCount : Math.ceil(ticketCount/perPage)}
         var populateQuery = [{path:'owner', select:'name'}, {path:'assignedto', select:'name'}]
-        const ticket = await Ticket.find({ })
-                                    .populate(populateQuery)
-                                    .sort({ _id: -1 }).skip(((perPage * page) - perPage))
-                                    .limit(perPage)
+        const { ticket, pagination } = await getTickets({populateQuery, page})
         res.render('ticket/list', { ticket , page_title: 'All Tickets', pagination, 
-                                    active_list:true , userName: userSession.userName})
+                                    active_list:true , userName: req.session.userName})
     } catch (error) {
         console.log('From Ticket List ' + error)
         req.flash('error', 'Something Went Wrong');
@@ -37,15 +32,10 @@ router.get('/myassignedtickets', auth, async (req, res) => {
     try {
         const assignedto = req.session.userId
         const page = parseInt(req.query.p) || 1
-        const perPage = 5
-        const ticketCount = await Ticket.find({ assignedto }).count()
-        const pagination = { page, pageCount : Math.ceil(ticketCount/perPage)}
-        const ticket = await Ticket.find({ assignedto })
-                                    .populate({ path: 'owner', select: 'name'})
-                                    .sort({ _id: -1 }).skip(((perPage * page) - perPage))
-                                    .limit(perPage)
+        var populateQuery = { path: 'owner', select: 'name'}
+        const { ticket, pagination } = await getTickets({populateQuery, page, whereClause: {assignedto} })
         res.render('ticket/myassignedtickets', { ticket , page_title: 'Tickets Assigned To Me', pagination, 
-                        active_myassignedtickets:true , userName: userSession.userName})
+                        active_myassignedtickets:true , userName: req.session.userName})
     } catch (error) {
         console.log('From Ticket List ' + error)
         req.flash('error', 'Something Went Wrong');
@@ -58,13 +48,8 @@ router.get('/mycreatedtickets', auth, async (req, res) => {
     try {
         const owner = req.session.userId
         const page = parseInt(req.query.p) || 1
-        const perPage = 5
-        const ticketCount = await Ticket.find({ owner }).count()
-        const pagination = { page, pageCount : Math.ceil(ticketCount/perPage)}
-        const ticket = await Ticket.find({ owner })
-                                    .populate({ path: 'assignedto', select: 'name'})
-                                    .sort({ _id: -1 }).skip(((perPage * page) - perPage))
-                                    .limit(perPage)
+        var populateQuery = { path: 'assignedto', select: 'name'}
+        const { ticket, pagination } = await getTickets({populateQuery, page, whereClause: {owner} })
         res.render('ticket/mycreatedtickets', { ticket , page_title: 'My Created Tickets', pagination, 
                                             active_mycreatedtickets: true })
     } catch (error) {

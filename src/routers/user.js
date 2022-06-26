@@ -40,16 +40,15 @@ router.post('/user/login', async (req,res) => {
                 req.flash('error', 'Unable to Login!');
                 return res.redirect('/')
             }
-            userSession = req.session;
-            if( userSession) {
-                userSession.userId = user._id
-                userSession.userName = user.name
+
+            if(req.session) {
+                req.session.userId = user._id
+                req.session.userName = user.name
+                return res.redirect('/list')
             } else {
-                userSession.userId = mongoose.Types.ObjectId('62b07919be9ffd50c52e4b6f')
-                userSession.userName = 'Andrew'
+                req.flash('error', 'Session Failed!');
+                return res.redirect('/')
             }
-           
-            return res.redirect('/list')
         } else {
             Object.keys(error.details).forEach((key) => {
                 req.flash('error', error.details[key].message)
@@ -81,17 +80,16 @@ router.post('/user/create', async (req, res) => {
             if(!emailExists) {
                 const newUser = await user.save()
                 if(newUser) {
-                    userSession = req.session;
-                    if( userSession) {
-                        userSession.userId = newUser._id
-                        userSession.userName = newUser.name
+                    if(req.session) {
+                        req.session.userId = newUser._id
+                        req.session.userName = newUser.name
+                        return res.redirect('/list')
                     } else {
-                        userSession.userId = mongoose.Types.ObjectId('62b07919be9ffd50c52e4b6f')
-                        userSession.userName = 'Andrew'
+                        req.flash('error', 'Session Failed To Load!');
+                        return res.redirect('/register')
                     }
-                    return res.redirect('/list')
                 } else {
-                    req.flash('success', 'User created successfully!')
+                    req.flash('erorr', 'Failed To Create User')
                     return res.redirect('/register')
                 }
             } else {
@@ -123,50 +121,5 @@ router.get('/logout', auth, async(req, res) => {
         return res.redirect('/list') 
     }
 })
-
-// router.post('/user/logout-all', auth, async(req, res) => {
-//     try {
-//         req.user.tokens = []
-//         await req.user.save()
-//         res.send({ message: 'Logged Out All Sessions!'})
-//     } catch (e) {
-//         res.status(400).send(e)
-//     }
-// })
-
-// router.get('/users/profile', auth, async(req, res) => {
-//     res.send(req.user)
-// })
-
-
-
-// router.patch('/user/update', auth, async (req, res) => {
-//     const updates = Object.keys(req.body)
-//     const allowedUpdates = ['name','email','password','age']
-//     const isValidOperator = updates.every((update) => allowedUpdates.includes(update))
-
-//     if(!isValidOperator) {
-//         return res.status(404).send({ error : 'Invalid Updates'})
-//     }
-//     try {
-//         updates.forEach((update) => req.user[update] = req.body[update])
-//         await req.user.save()
-//         res.send(req.user)
-//     } catch (e) {
-//         res.status(500).send(e)
-//     }
-    
-// })
-
-// router.delete('/user/delete', auth, async (req, res) => {
-
-//     try {
-//         await req.user.remove()
-//         sendCancellationEmail(re.user.email, req.user.name)
-//         res.send(req.user)
-//     } catch (e) {
-//         res.status(500).send(e)
-//     }
-// })
 
 module.exports = router
