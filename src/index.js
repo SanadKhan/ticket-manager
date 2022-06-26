@@ -7,7 +7,7 @@ require('./db/mongoose')
 const bodyparser = require('body-parser')
 const flash =  require('express-flash')
 const session = require('express-session')
-// const dotenv = require('../config/dev.env').config()
+require('../app/helper');
 
 var mongoose = require('mongoose');
 console.log(mongoose.STATES[mongoose.connection.readyState]);
@@ -32,9 +32,9 @@ hbs.registerPartials(partialsPath)
 app.use(session({ 
 	secret: process.env.SESSION_KEY,
 	resave: false,
-	saveUninitialized: false,
+	saveUninitialized: true,
 	cookie: {
-		secure: true, 
+		secure: false, 
 		maxAge: 259199772 	
 	}
 }))

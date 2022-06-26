@@ -12,7 +12,7 @@ hbs.registerHelper('select', function(selected, options) {
 hbs.registerHelper('descp_slice', str => {
     const strFirst =  str.slice(0, 60);
     return strFirst;
-})
+});
 
 hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
 
