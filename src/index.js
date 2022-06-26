@@ -30,7 +30,7 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 app.use(session({ 
-	secret: process.env.SESSION_KEY,
+	secret: '123456tm',
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
