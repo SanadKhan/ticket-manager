@@ -10,10 +10,6 @@ const MongoStore = require('connect-mongo');
 require('../app/helper')
 require('./db/mongoose')
 
-var mongoose = require('mongoose');
-console.log(mongoose.STATES[mongoose.connection.readyState]);
-console.log(process.env.MONGODB_URL)
-
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
 const port = process.env.PORT
