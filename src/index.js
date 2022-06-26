@@ -7,7 +7,11 @@ require('./db/mongoose')
 const bodyparser = require('body-parser')
 const flash =  require('express-flash')
 const session = require('express-session')
-const hbsHelpers = require('../app/helper');
+// const dotenv = require('../config/dev.env').config()
+
+var mongoose = require('mongoose');
+console.log(mongoose.STATES[mongoose.connection.readyState]);
+console.log(process.env.MONGODB_URL)
 
 const app = express() 
 app.use(bodyparser.urlencoded({ extended: true }));
