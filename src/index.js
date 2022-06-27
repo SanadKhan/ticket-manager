@@ -30,10 +30,10 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true,
 	proxy: true,
-	name: 'TicketManagerCookies',
+	name: process.env.SESSION_NAME,
 	cookie: {
 		httpOnly: true,
-		secure: true, 
+		secure: process.env.SESSION_SECURE === 'dev' ? false : true, 
 		sameSite: 'none', 
 		maxAge: 24 * 60 * 60 * 1000 // One day	
 	},
