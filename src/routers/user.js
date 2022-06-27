@@ -43,6 +43,7 @@ router.post('/user/login', async (req,res) => {
 
             if(req.session) {
                 console.log('Session Connected')
+                console.log(req.session)
                 req.session.userId = user._id
                 req.session.userName = user.name
                 return res.redirect('/list')
