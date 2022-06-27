@@ -25,20 +25,19 @@ app.use(bodyparser.json());
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
+
 app.use(session({ 
 	secret: process.env.SESSION_KEY,
 	resave: false,
 	saveUninitialized: true,
-	proxy: true,
 	name: process.env.SESSION_NAME,
 	cookie: {
-		httpOnly: true,
 		secure: process.env.SESSION_SECURE === 'dev' ? false : true, 
-		sameSite: 'none', 
 		maxAge: 24 * 60 * 60 * 1000 // One day	
 	},
 	store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL})
 }))
+
 app.use(flash())
 app.use(userRouter)
 app.use(ticketRouter)

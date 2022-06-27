@@ -64,8 +64,6 @@ router.get('/ticket/add', auth, async (req, res) => {
     res.render('ticket/add', {page_title: 'Add Ticket', listUsers})
 })
 
-
-
 router.post('/ticket/create',  auth, async(req, res) => {
    
     try {
