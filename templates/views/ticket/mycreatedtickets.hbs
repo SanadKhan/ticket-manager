@@ -32,6 +32,9 @@
                             <td>{{assignedto.name}}</td>
                             <td>{{status}}</td>
                             <td>
+                                <a href="/ticket/view/{{_id}}"
+                                    <i class="fa fa-eye" style="color: #449d44;text-align: center" aria-hidden="true"></i>
+                                </a>
                                 <a href="/ticket/edit/{{_id}}"><i class="fa fa-edit"></i></a>
                                 <a href="/ticket/delete/{{_id}}"
                                 onclick="return confirm('Are you sure to delete this record ?');"><i

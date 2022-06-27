@@ -1,0 +1,35 @@
+{{>header}}
+    <div class="container"><br>
+        <div>
+            <div class="float-left">
+                <h2>{{page_title}}</h2><br>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th class="th-lg">Title</th>
+                        <td>{{ticket.title}}</td>
+                    </tr>
+                    <tr>
+                        <th class="th-lg">Description</th>
+                        <td>{{ticket.description}}</td>
+                    </tr>
+                    <tr>
+                        <th class="th-lg">Assinged By</th>
+                         <td>{{ticket.owner.name}}</td>
+                    </tr>
+                    <tr>
+                        <th class="th-lg">Assinged To</th>
+                        <td>{{ticket.assignedto.name}}</td>
+                    </tr>
+                    <tr>
+                        <th class="th-lg">Status</th>
+                        <td>{{ticket.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{>footer}}

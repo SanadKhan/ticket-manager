@@ -18,6 +18,7 @@
                         <th class="th-lg">Description</th>
                         <th class="th-lg">Assigned By</th>
                         <th class="th-lg">Status</th>
+                        <th class="th-lg">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,11 @@
                                 </td>
                             </form>
                             {{/ifCond}}
+                            <td>
+                                <a href="/ticket/view/{{_id}}"
+                                    <i class="fa fa-eye" style="color: #449d44;text-align: center" aria-hidden="true"></i>
+                                </a>
+                            </td>
                         </tr>
                     {{else}}
                         <tr>

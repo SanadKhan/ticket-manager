@@ -140,6 +140,13 @@ router.post('/ticket/updatestatus/:id', auth, async (req, res) => {
     }
 })   
 
+router.get('/ticket/view/:id', auth, async (req, res) => {
+    var populateQuery = [{path:'owner', select:'name'}, {path:'assignedto', select:'name'}]
+    const ticket = await Ticket.findOne({_id:req.params.id})
+                                .populate(populateQuery)
+    res.render('ticket/view', {page_title: 'Ticket Details', ticket})
+})
+
 router.get('/ticket/delete/:id', auth, async (req, res) => {
 
     try {
