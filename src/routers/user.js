@@ -42,10 +42,12 @@ router.post('/user/login', async (req,res) => {
             }
 
             if(req.session) {
+                console.log('Session Connected')
                 req.session.userId = user._id
                 req.session.userName = user.name
                 return res.redirect('/list')
             } else {
+                console.log('Session Failed')
                 req.flash('error', 'Session Failed!');
                 return res.redirect('/')
             }
@@ -81,10 +83,12 @@ router.post('/user/create', async (req, res) => {
                 const newUser = await user.save()
                 if(newUser) {
                     if(req.session) {
+                        console.log('Session Connected')
                         req.session.userId = newUser._id
                         req.session.userName = newUser.name
                         return res.redirect('/list')
                     } else {
+                        console.log('Session Failed')
                         req.flash('error', 'Session Failed To Load!');
                         return res.redirect('/register')
                     }
