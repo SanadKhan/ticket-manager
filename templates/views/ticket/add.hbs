@@ -1,6 +1,6 @@
 {{>header}}
     <div class="container pt-3"><br>
-        <form method="POST" action="/ticket/create">
+        <form method="POST" enctype="multipart/form-data" action="/ticket/create" >
             <fieldset>
                 <legend>{{page_title}}</legend><br><br>
                 {{#if messages.error }}
@@ -41,9 +41,19 @@
                             </select>
                         </div>
                     </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="ticketImage">Ticket Image</label>
+                            <input type="file" name="ticket_image" id="ticket_image" class="form-control" 
+                            accept="image/*" onchange="loadFile(event)" multiple>
+                        <div id="image_preview"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center text-lg-start mt-4 pt-2">
-                    <input type="submit" class="btn btn-primary" value="Create">
+                    <input type="submit" id="btnUpload" class="btn btn-primary" value="Create">
                 </div>
             </fieldset>
         </form>

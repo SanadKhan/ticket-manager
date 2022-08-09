@@ -28,8 +28,23 @@
                         <th class="th-lg">Status</th>
                         <td>{{ticket.status}}</td>
                     </tr>
+                    <tr>
+                        <th class="th-lg">Snaps</th>
+                        <td>
+                        {{#each ticket.urls}}
+                            <img class="ticket-images" id="myImg" src="{{this}}">    
+                        {{/each}}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+                {{!-- <div id="caption"></div> --}}
+            </div>
         </div>
     </div>
 {{>footer}}

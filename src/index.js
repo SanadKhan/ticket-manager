@@ -30,7 +30,7 @@ app.use(session({
 	secret: process.env.SESSION_KEY,
 	resave: false,
 	saveUninitialized: true,
-	proxy: true,
+	proxy: process.env.PROXY_STATUS === 'dev' ? false : true, 
 	name: process.env.SESSION_NAME,
 	cookie: {
 		secure: process.env.SESSION_SECURE === 'dev' ? false : true,  

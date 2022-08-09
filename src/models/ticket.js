@@ -23,7 +23,16 @@ const ticketSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
-    }
+    },
+    fileId: [{
+        type: String
+    }],
+    urls: [{
+        type: String
+    }],
+    modifiedUrls: [{
+        type: String
+    }]
 },{ 
     timestamps: true
 })
