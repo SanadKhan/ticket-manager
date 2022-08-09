@@ -71,13 +71,14 @@ router.get('/ticket/add', auth, async (req, res) => {
     const listUsers = await User.find({})
     res.render('ticket/add', {page_title: 'Add Ticket', listUsers})
 })
-const multer = require('multer')
 
+const multer = require('multer')
 const uploads = multer({
     limits: {
         fileSize: 1 * 1024 * 1024
     }
-}).array('ticket_image',2   )
+}).array('ticket_image',2)
+
 router.post('/ticket/create',  auth, (req, res) => {
     uploads(req, res, async(err) => {
         if(err instanceof multer.MulterError) {
@@ -95,9 +96,6 @@ router.post('/ticket/create',  auth, (req, res) => {
             try {
                 const {error, ticketValue} = ticketValidation.validate({ title: req.body.title, description: req.body.description})  
                 if(!error) {
-                    // const btnUpload = document.getElementById('btnUpload')
-                    // btnUpload.disabled = true 
-                    
                     let contents = await Promise.all(req.files.map((file) => {
                         return imageKit.upload({
                             file: file.buffer,
@@ -126,8 +124,8 @@ router.post('/ticket/create',  auth, (req, res) => {
                     req.body.urls = urls
                     req.body.modifiedUrls = modifiedUrls
                     console.log(req.body)
-                    // const ticket = new Ticket({ ...req.body, owner })
-                    // await ticket.save()
+                    const ticket = new Ticket({ ...req.body, owner })
+                    await ticket.save()
                     req.flash('success', 'Ticket Added Successfully')
                     return res.redirect('/mycreatedtickets')
                 } else {
