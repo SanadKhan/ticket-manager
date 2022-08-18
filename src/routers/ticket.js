@@ -137,20 +137,20 @@ router.post('/ticket/update/:id', auth, async (req, res) => {
             try {
                 if(!error) {
                     const getTickets = await Ticket.findById(req.params.id);
-                    console.log("From Tickets " ,getTickets.files);
+                    // console.log("From Tickets " ,getTickets.files);
                     if(req.files.length > 0) {
                         if(req.body.delete_image === undefined && req.body.ticketFileIds === undefined) {
                             const fileResult = await uploadFiles(req.files);
                             req.body.files = fileResult;
                         }
                         if (req.body.delete_image === undefined && req.body.ticketFileIds) {
-                            console.log("first if block");
+                            // console.log("first if block");
                             await deleteFiles(req.body.ticketFileIds);
                             const fileResult = await uploadFiles(req.files);
                             req.body.files = fileResult;
                         } 
                         if (req.body.delete_image && req.body.delete_image.length === 1) {
-                            console.log("second if block");
+                            // console.log("second if block");
                             const {successfullyDeletedFileIds} = await deleteFiles(req.body.delete_image);
                             const deletedFileId = successfullyDeletedFileIds[0];
                             const files = getTickets.files.filter(file => {
@@ -161,25 +161,28 @@ router.post('/ticket/update/:id', auth, async (req, res) => {
                             req.body.files = req.body.files.concat({ newFile });
                         } 
                         if (req.body.delete_image && req.body.delete_image.length > 1) {
-                            console.log("second if's else block");
+                            // console.log("second if's else block");
                             await deleteFiles(req.body.delete_image);
                             const fileResult = await uploadFiles(req.files);
                             req.body.files = fileResult;
                         }
                     } else {
-                        if (req.body.delete_image.length > 1) {
-                            await deleteFiles(req.body.delete_image);
-                            req.body.files = [];
-                        } else {
-                            const {successfullyDeletedFileIds} = await deleteFiles(req.body.delete_image);
-                            const deletedFileId = successfullyDeletedFileIds[0];
-                            const fileResult = getTickets.files.filter(file => {
-                                return deletedFileId !== file.fileId;
-                            })
-                            req.body.files = fileResult;
+                        if(req.body.delete_image) {
+                            if (req.body.delete_image.length > 1) {
+                                await deleteFiles(req.body.delete_image);
+                                req.body.files = [];
+                            } else {
+                                const {successfullyDeletedFileIds} = await deleteFiles(req.body.delete_image);
+                                const deletedFileId = successfullyDeletedFileIds[0];
+                                const fileResult = getTickets.files.filter(file => {
+                                    return deletedFileId !== file.fileId;
+                                })
+                                req.body.files = fileResult;
+                            }
                         }
+                        
                     }
-                    console.log(req.body);
+                    // console.log(req.body);
                     const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body);
                     if(ticket) {
                         req.flash('success', 'Updated Successfully!');
