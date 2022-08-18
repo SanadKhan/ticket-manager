@@ -1,6 +1,10 @@
 {{>header}}
     <div class="container pt-3"><br>
-        <form method="POST" action="/ticket/update/{{ticket._id}}">
+        <form method="POST" enctype="multipart/form-data" action="/ticket/update/{{ticket._id}}">
+            {{#ticket.files}}
+                <input type="hidden" name="ticketFileIds[]" value="{{fileId}}">
+            {{else}}
+            {{/ticket.files}}
             <fieldset>
                 <legend>{{page_title}}</legend><br><br>
                 {{#if messages.error }}
@@ -54,6 +58,31 @@
                                 <option value="Completed">Completed</option>
                             </select>
                             {{/select}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="ticketImage">Ticket Image</label>
+                            <input type="file" name="ticket_image" id="ticket_image" class="form-control" 
+                            accept="image/*" onchange="loadFile(event)" multiple>
+                        <div id="image_preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="ticketImage">Select to Delete Image</label>
+                            {{#ticket.files}}
+                                <input type="checkbox" name="delete_image[]" value="{{fileId}}">
+                                <img class="ticket-images" src="{{url}}">  
+                            {{else}}
+                                <b>No images added</b>
+                            {{/ticket.files}}
                         </div>
                     </div>
                 </div>

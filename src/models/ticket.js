@@ -24,18 +24,13 @@ const ticketSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    fileId: [{
-        type: String
-    }],
-    urls: [{
-        type: String
-    }],
-    modifiedUrls: [{
-        type: String
+    files: [{
+        fileId: String,
+        url: String
     }]
-},{ 
-    timestamps: true
-})
+},
+{ timestamps: true }
+)
 
 const Ticket = mongoose.model('Ticket', ticketSchema)
 module.exports = Ticket

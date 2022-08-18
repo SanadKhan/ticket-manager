@@ -31,10 +31,13 @@
                     <tr>
                         <th class="th-lg">Snaps</th>
                         <td>
-                        {{#each ticket.urls}}
-                            <img class="ticket-images" id="myImg" src="{{this}}">    
-                        {{/each}}
+                        {{#ticket.files}}
+                            <img class="ticket-images" src="{{url}}">    
+                        {{else}}
+                            No Snaps Available
+                        {{/ticket.files}} 
                         </td>
+
                     </tr>
                 </tbody>
             </table>
