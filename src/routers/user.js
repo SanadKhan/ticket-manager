@@ -4,6 +4,8 @@ const joi = require('joi')
 const bcrypt = require('bcryptjs')
 const auth = require('../middleware/auth')
 const router = new express.Router()
+const io = require('../../app/socketio').getIO();
+const { addUser, removeUser, getAllUsers } = require('../../utils/socketUsers');
 
 const userRegisterValidation = joi.object({
         name: joi.string().min(3).max(30).required().trim(),
@@ -18,6 +20,8 @@ const userLoginValidation = joi.object({
 
 
 router.get('',(req, res) => {
+
+    // console.log("Socket Users ", getAllUsers() );
     res.render('index', {
         title: 'Ticket Manager'
     })
@@ -30,22 +34,30 @@ router.post('/user/login', async (req,res) => {
         const password =  req.body.password
         const {error, userLoginValue} = userLoginValidation.validate({ email, password})
         if(!error ) {
-            const user = await User.findOne({ email })
-            if(!user) {
+            const newUser = await User.findOne({ email })
+            if(!newUser) {
                 req.flash('error', 'Unable to Login!');
                 return res.redirect('/')
             }
-            const isMatch = await bcrypt.compare(password, user.password)
+            const isMatch = await bcrypt.compare(password, newUser.password)
             if(!isMatch) {
                 req.flash('error', 'Unable to Login!');
                 return res.redirect('/')
             }
 
             if(req.session) {
-                console.log('Session Connected')
-                console.log(req.session)
-                req.session.userId = user._id
-                req.session.userName = user.name
+                console.log('Session Connected');
+                io.on('connection', (socket) => {
+                    // console.log("Logged In ", socket.id);
+                    const { error, user } = addUser({ id: socket.id, username: newUser.email});
+                    // if(!error) {
+                    //     console.log("From socket ", user);
+                    // }
+                    // socket.emit('join', {userEmail: user.email}); 
+                });
+                console.log(req.session);
+                req.session.userId = newUser._id
+                req.session.userName = newUser.name
                 return res.redirect('/list')
             } else {
                 console.log('Session Failed')
@@ -59,7 +71,7 @@ router.post('/user/login', async (req,res) => {
             })
         } 
     } catch (error) {
-        console.log('From Login ' + error)
+        console.log('From Login ' ,error)
         req.flash('error', 'Something Went Wrong');
         return res.redirect('/')
     }
@@ -117,14 +129,15 @@ router.post('/user/create', async (req, res) => {
 
 router.get('/logout', auth, async(req, res) => {
     try {
-        req.flash('success', 'Successfully Logged Out!')
-        req.session.destroy()
-        return res.redirect('/')
+        const loggedUser = await User.findOne({_id: req.session.userId});
+        removeUser(loggedUser.email);
+        req.session.destroy();
+        return res.redirect('/');
     } catch (error) {
-        console.log('From Logout ' + error)
+        console.log('From Logout ' + error);
         req.flash('error', 'Something Went Wrong');
-        return res.redirect('/list') 
+        return res.redirect('/list'); 
     }
-})
+});
 
 module.exports = router

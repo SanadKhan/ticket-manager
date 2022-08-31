@@ -1,6 +1,6 @@
 {{>header}}
     <div class="container pt-3"><br>
-        <form method="POST" enctype="multipart/form-data" action="/ticket/create" >
+        <form  method="POST" enctype="multipart/form-data" action="/ticket/create" >
             <fieldset>
                 <legend>{{page_title}}</legend><br><br>
                 {{#if messages.error }}
@@ -54,7 +54,7 @@
                 </div>
                 <div class="text-center text-lg-start mt-4 pt-2">
                     <input type="submit" id="btnUpload" class="btn btn-primary" value="Create">
-                </div>
+                </div> 
             </fieldset>
         </form>
     </div>

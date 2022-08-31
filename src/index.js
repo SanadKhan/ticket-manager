@@ -1,18 +1,25 @@
 const express = require('express')
 const hbs = require('hbs')
 const path = require('path')
-const userRouter = require('./routers/user')
-const ticketRouter = require('./routers/ticket')
 const bodyparser = require('body-parser')
 const flash =  require('express-flash')
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
-require('../app/helper')
-require('./db/mongoose')
+require('../app/helper');
+require('./db/mongoose');
 
-const app = express() 
+const port = process.env.PORT || 3000;
+const app = express();
+const server = app.listen(port ,() => {
+	console.log('Server is up to port ' +port)
+});
+
+const sio = require('../app/socketio');
+sio.init(server);
+// use dependent routes for io
+const userRouter = require('./routers/user');
+const ticketRouter = require('./routers/ticket');
 app.use(bodyparser.urlencoded({ extended: true }));
-const port = process.env.PORT
 
 //Define path for views
 const publicDirectoryPath = path.join(__dirname,'../public')
@@ -39,16 +46,28 @@ app.use(session({
 	store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL})
 }))
 
-app.use(flash())
-app.use(userRouter)
-app.use(ticketRouter)
+// // Socket
+// let count = 0;
+// io.on('connection', (socket) => {
+// 	console.log("New Web Socket Connected!");
+// 	// socket.emit('countUpdated!');
+// 	socket.emit('message', 'Welcome!');
+// 	socket.on('sendTicketMessage', () => {
+// 		// count++;
+// 		io.emit('message', "New Ticket Assigned");
+// 	})
+// 	// socket.on('sendTicketMessage', (ticketAssigned,callback) => {
+// 	// 	socket.emit('message', 'New ticket is assigned to you!');
+// 	// 	callback();
+// 	// })
+// });
+
+app.use(flash());
+app.use(userRouter);
+app.use(ticketRouter);
 
 app.get('*', (req, res) => {
 	res.render('404', {
 		title:'Ticket Manager',
-	})
-})
-
-app.listen(port ,() => {
-	console.log('Server is up to port ' +port)
-})
+	});
+});

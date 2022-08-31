@@ -6,6 +6,8 @@ const Ticket = require('../models/ticket')
 const User = require('../models/user')
 const joi = require('joi')
 const { getTickets, uploadFiles, deleteFiles } = require('../services/ticket')
+const io = require('../../app/socketio').getIO();
+const { getUser} = require('../../utils/socketUsers');
 
 const ticketValidation = joi.object({
     title: joi.string().min(5).max(30).required().trim(),
@@ -13,7 +15,6 @@ const ticketValidation = joi.object({
 })
 
 router.get('/list',  auth, async (req, res) => {
-
     try {
         const page = parseInt(req.query.p) || 1
         var populateQuery = [{path:'owner', select:'name'}, {path:'assignedto', select:'name'}]
@@ -93,16 +94,24 @@ router.post('/ticket/create',  auth, (req, res) => {
                         const fileResult = await uploadFiles(req.files)
                         req.body.files = fileResult
                     }
-                    const owner = req.session.userId
-                    const ticket = new Ticket({ ...req.body, owner })
-                    await ticket.save()
-                    req.flash('success', 'Ticket Added Successfully')
-                    return res.redirect('/mycreatedtickets')
+                    const owner = req.session.userId;
+                    const ticket = new Ticket({ ...req.body, owner });
+                    await ticket.save();
+                    if(ticket) {
+                        console.log("User Connected!");
+                        let assignedUser = await User.findOne({_id: ticket.assignedto}); 
+                        assignedUser = getUser(assignedUser.email);
+                        if(assignedUser) {
+                            io.to(assignedUser.id).emit('message','New Ticket has been assigned!')
+                        }
+                    }
+                    req.flash('success', 'Ticket Added Successfully');
+                    return res.redirect('/list');
                 } else {
                     Object.keys(error.details).forEach((key) => {
-                        req.flash('error', error.details[key].message)
-                        return res.redirect('/ticket/add')
-                    })
+                        req.flash('error', error.details[key].message);
+                        return res.redirect('/ticket/add');
+                    });
                 } 
             } catch (error) {
                 console.log('From Add Ticket ' , error)
@@ -114,24 +123,24 @@ router.post('/ticket/create',  auth, (req, res) => {
 })
 
 router.get('/ticket/edit/:id', auth, async (req, res) => {
-    const ticket = await Ticket.findOne({_id:req.params.id})
-    const user = await User.find({ })
-    res.render('ticket/edit', {page_title: 'Edit Ticket', ticket, user})
-})
+    const ticket = await Ticket.findOne({_id:req.params.id});
+    const user = await User.find({ });
+    res.render('ticket/edit', {page_title: 'Edit Ticket', ticket, user});
+});
 
 router.post('/ticket/update/:id', auth, async (req, res) => {
     uploads(req, res, async(err) => {
         if(err instanceof multer.MulterError) {
             if(err.message == 'Unexpected field'){
                 req.flash('error', `Maximum 2 file uploads`) // Multer error while uploading
-                return res.redirect('/ticket/add')
+                return res.redirect('/ticket/edit/'+req.params.id)
             }
             req.flash('error', `Multer Err ${err.message}`) // Multer error while uploading
-            return res.redirect('/ticket/add')
+            return res.redirect('/ticket/edit/'+req.params.id)
            
         } else if (err) {
             req.flash('error', `Unknown Error ${err.message}`) // Unknown  error while uploading
-            return res.redirect('/ticket/add')
+            return res.redirect('/ticket/edit/'+req.params.id)
         } else {
             const {error, ticketValue} = ticketValidation.validate({ title: req.body.title, description: req.body.description})
             try {
